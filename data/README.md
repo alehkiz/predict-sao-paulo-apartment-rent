@@ -1,0 +1,1 @@
+The data was collected from https://www.kaggle.com/datasets/argonalyst/sao-paulo-real-estate-sale-rent-april-2019?resource=download
