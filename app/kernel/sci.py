@@ -22,7 +22,7 @@ class Pipeline(object):
         self.ordinal_encoder = load(config.ORDINAL_ENCODER)
         self.pipeline = load(config.PIPELINE)
 
-    def load(self, bedrooms:int =0, bathrooms:int=0, parking:int=0, area:int=0, tenement:str=''):
+    def load(self, bedrooms:int =0, toilets:int=0, suites:int=0, parking:int=0, area:int=0, furnished:bool=False, swimming_pool:bool=False, elevator:bool=False, neighborhood:str=''):
         """Insert in `self.data` values for sample inserted by user for prediction
 
         Args:
@@ -32,11 +32,12 @@ class Pipeline(object):
             area (int): Size area
             tenement (str): neighborhood in string
         """
-        bairro = self.ordinal_encoder.transform([[tenement]]).flatten()[0]
+        neighborhood = self.ordinal_encoder.transform([[neighborhood]]).flatten()[0]
         # print(f'Bairro: {tenement}:{bairro}')
-        self.data = [bedrooms, bathrooms, parking, area, bairro]
+        #Size 	Rooms 	Toilets 	Suites 	Parking 	Elevator 	Furnished 	Swimming Pool 	District
+        self.data = [area, bedrooms, toilets, suites, parking, elevator, furnished, swimming_pool, neighborhood]
     def get_neighborhood_id(self, neighborhood:str) -> str:
-        return self.ordinal_encoder.transform([[neighborhood]]).flatten()[0]
+        return int(self.ordinal_encoder.transform([[neighborhood]]).flatten()[0])
         
     def predict(self):
         """After load run predict to get value of price of rent of house.

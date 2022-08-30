@@ -16,4 +16,5 @@ tqdm==4.62.3
 WTForms==2.3.3
 gunicorn
 python-dotenv == 0.20.0
+xgboost == 1.6.2
 # psycopg2 == 2.9.3

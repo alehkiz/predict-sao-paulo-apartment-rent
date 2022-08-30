@@ -1,12 +1,12 @@
 from flask import Blueprint, current_app as app, render_template, url_for, redirect
-from app.forms.tenement import Tenement
+from app.forms.apartment import Apartment
 from app.kernel.sci import Pipeline
 
 bp = Blueprint("main", __name__, url_prefix="/")
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-    form = Tenement()
+    form = Apartment()
     # if form.validate_on_submit():
     #     pipeline = Pipeline()
     #     pipeline.load(

@@ -1,7 +1,7 @@
 import json
 from flask import Blueprint, current_app as app, render_template, request, jsonify, abort, url_for
 
-from app.forms.tenement import Tenement
+from app.forms.apartment import Apartment
 from app.kernel.sci import Pipeline
 from app.models.app import Immobile
 from app.core.db import db
@@ -13,25 +13,34 @@ def get_price():
     '''TODO: Criar função para receber um json com os dados do apartamento, 
     calcular o valor do preço do aluguel e retornar em reais.
     '''
-    form = Tenement()
+    form = Apartment()
     im = Immobile()
     if form.validate_on_submit():
         pipeline = Pipeline()
         pipeline.load(
-            form.bedrooms.data, 
-            form.bathrooms.data, 
-            form.parking.data,
-            form.area.data,
-            form.neighborhood.data
+            bedrooms=form.bedrooms.data, 
+            toilets=form.toilets.data, 
+            parking=form.parking.data,
+            area=form.area.data,
+            neighborhood=form.neighborhood.data,
+            furnished=form.furnished.data,
+            suites=form.suites.data,
+            swimming_pool=form.swimming_pool.data,
+            elevator=form.elevator.data,
+
             )
         predict = pipeline.predict()
         im.bedrooms = form.bedrooms.data
-        im.bathrooms = form.bathrooms.data
+        im.toilets = form.toilets.data
+        im.parking = form.parking.data
+        im.suites = form.suites.data
         im.parking = form.parking.data
         im.area = form.area.data
+        im.furnished = form.furnished.data
+        im.swimming_pool = form.swimming_pool.data
         im.s_neighborhood = form.neighborhood.data 
         im.neighborhood = pipeline.get_neighborhood_id(im.s_neighborhood)
-        im.price = predict['original']
+        im.price = float(predict['original'])
         db.session.add(im)
         db.session.commit()
         return jsonify({'valor': predict['monetary'],
