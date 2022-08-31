@@ -21,6 +21,7 @@ class BaseConfig(object):
     MODELS = join(BASE_DIR, r'models')
     ORDINAL_ENCODER = join(MODELS, 'ordinal_encoder.joblib')
     PIPELINE = join(MODELS, 'pipe_rfr.joblib')
+    PCA = join(MODELS, 'pca.joblib')
 
     _SQLALCHEMY_DATABASE_NAME = environ.get('DATABASE', False) or PROJECT_NAME.lower()
     _SQLALCHEMY_DATABASE_HOST = environ.get('DB_HOST')
