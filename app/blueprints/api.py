@@ -45,7 +45,7 @@ def get_price():
         db.session.commit()
         return jsonify({'valor': predict['monetary'],
                         'id': im.id,
-                        'url_validate': url_for('api.validate', id=im.id, type=True),
+                        'url_validate': url_for('api.validate', id=im.id, type='VALID'),
                         'url_correct': url_for('api.correct', id=im.id)})
     return abort(404)
 @bp.route('/validate/<int:id>/<type>')
@@ -68,6 +68,7 @@ def correct(id: int):
     im = Immobile.query.filter(Immobile.id == id).first_or_404()
     if request.form.get('input-correct-value', False) != False:
         im.correct_value = request.form.get('input-correct-value')
+        im.validate = False
         db.session.commit()
         return jsonify({'status': True})
     return jsonify({'status': False})
